@@ -1,3 +1,4 @@
+import numpy as np
 import scipy.linalg as la
 
 from flask import Flask, request, jsonify
@@ -9,16 +10,19 @@ app = Flask(__name__)
 CORS(app)
 
 
+eps = np.float_power(10, -10)
+
+
 @app.route("/Tema1/p1", methods=["GET"])
 def hw1_p1():
     import Tema1
-    return jsonify(Tema1.problema1()), HTTPStatus.CREATED
+    return jsonify({"result": Tema1.problema1()}), HTTPStatus.CREATED
 
 
 @app.route("/Tema1/p2", methods=["GET"])
 def hw1_p2():
     import Tema1
-    return jsonify(Tema1.problema2()), HTTPStatus.CREATED
+    return jsonify({"result": Tema1.problema2()}), HTTPStatus.CREATED
 
 
 @app.route("/Tema1/p3", methods=["POST"])
@@ -31,7 +35,11 @@ def hw1_p3():
         return jsonify(Tema1.problema3(mat1, mat2, len(mat1))), HTTPStatus.CREATED
 
 
-@app.route("/Tema2/solve", methods=["POST"])
+def get_result(string, value, eps):
+    return "{}: {} [{}]".format(string, value, "OK" if value < eps else "Not OK")
+
+
+@app.route("/Tema2", methods=["POST"])
 def hw2_solve():
     A_init = request.json.get("A_init")
     b_init = request.json.get("b_init")
@@ -46,36 +54,34 @@ def hw2_solve():
         A_LU_inv = Tema2.inverse(A_init)
         result4 = la.norm(A_LU_inv - A_init_lib_inv)
         return jsonify({
-            "result1": "{}{}{}".format(
-                "||A_init * x - b_init||",
-                result1,
-                "[OK]" if result1 < eps else "[Not OK]"),
+            "result1": get_result("||A_init * x - b_init||", result1, eps),
+            "result2": get_result("||x_LU - x_lib||", result2, eps),
+            "result3": get_result("||x_LU - A_lib_inv * b_init||", result3, eps),
+            "result4": get_result("||A_LU_inv - A_lib_inv||", result4, eps)
         }), HTTPStatus.CREATED
 
 
-@app.route("/Tema2/inverted", methods=["POST"])
-def hw2_inverted():
-    A_init = request.json.get("A_init")
-    b_init = request.json.get("b_init")
-
-    if len(A_init) == len(b_init):
-        import Tema2
-        return jsonify(Tema2.inverse(A_init)), HTTPStatus.CREATED
-
-
-@app.route("/Tema3/add", methods=["POST"])
+@app.route("/Tema3", methods=["POST"])
 def hw3_add():
     import Tema3
-    a, _ = Tema3.load_matrix_from_string(request.json.get("a"))
+    a, n = Tema3.load_matrix_from_string(request.json.get("a"))
     b, _ = Tema3.load_matrix_from_string(request.json.get("b"))
-    if len(a) == len(b):
-        return jsonify(Tema3.matrix_addition(a, b)), HTTPStatus.CREATED
-
-
-@app.route("/Tema3/mult", methods=["POST"])
-def hw3_mult():
-    import Tema3
-    Tema3.matrix_dot()
+    aplusb, _ = Tema3.load_matrix_from_string(request.json.get("aplusb"))
+    aorib, _ = Tema3.load_matrix_from_string(request.json.get("aorib"))
+    a_plus_b_calculated = Tema3.matrix_addition(a, b)
+    a_ori_b_calculated = Tema3.matrix_dot(a, b, n)
+    return jsonify({
+        "a_plus_b": get_result(
+            "A + B",
+            0 if Tema3.check_equal_matrix(aplusb, a_plus_b_calculated, n) else 1,
+            eps
+        ),
+        "a_ori_b": get_result(
+            "A * B",
+            0 if Tema3.check_equal_matrix(aorib, a_ori_b_calculated, n) else 1,
+            eps
+        )
+    }), HTTPStatus.CREATED
 
 
 @app.route("/Tema4/solve", methods=["POST"])
