@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import users from "../../global/usersList";
 import "./Users.css";
 import { Input, Button } from "@material-ui/core";
-class Tema2 extends Component {
+class Tema4 extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,20 +18,20 @@ class Tema2 extends Component {
   submit = async () => {
     console.log(
       JSON.stringify({
-        A_init: this.state.matr1,
-        b_init: this.state.matr2,
+        a: this.state.matr1,
+        b: this.state.matr2,
       })
     );
 
-    var response = await fetch("http://localhost:5000/Tema2", {
+    var response = await fetch("http://localhost:5000/Tema4/solve", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        A_init: this.state.matr1,
-        b_init: this.state.matr2,
+        a: this.state.matr1,
+        b: this.state.matr2,
       }),
     }).then((response) => response.json());
     console.log(response);
@@ -42,7 +42,7 @@ class Tema2 extends Component {
     return (
       <div style={{ marginLeft: "15px", width: "100%" }}>
         <div>
-          <p>Rezolvarea ecuatiilor liniare folosind descompunera LU:</p>
+          <p>Rezolvarea unui sistem de ecuatii cu matrici rare:</p>
           <div
             style={{
               display: "flex",
@@ -87,10 +87,8 @@ class Tema2 extends Component {
           <Button onClick={() => this.submit()}>Submit</Button>
           {this.state.respMatr !== null ? (
             <div>
-              <p>{this.state.respMatr.result1}</p>
-              <p>{this.state.respMatr.result2}</p>
-              <p>{this.state.respMatr.result3}</p>
-              <p>{this.state.respMatr.result4}</p>
+              <p>{this.state.respMatr.result}</p>
+              
             </div>
           ) : null}
         </div>
@@ -99,4 +97,4 @@ class Tema2 extends Component {
   }
 }
 
-export default Tema2;
+export default Tema4;

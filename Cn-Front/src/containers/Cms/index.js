@@ -11,6 +11,8 @@ import { Redirect } from "react-router-dom";
 import * as actionTypes from "../../store/actions/actions";
 import Tema2 from "../Tema/Tema2";
 import Tema3 from "../Tema/Tema3";
+import Tema4 from "../Tema/Tema4";
+import Tema6 from "../Tema/Tema4 copy";
 
 class CMS extends Component {
   render() {
@@ -48,8 +50,8 @@ class CMS extends Component {
           <Route path="/tema1" component={Tema1} />
           <Route path="/tema2" component={Tema2} />
           <Route path="/tema3" component={Tema3} />
-          <Route path="/tema4" component={Tema1} />
-          <Route path="/tema6" component={Tema1} />
+          <Route path="/tema4" component={Tema4} />
+          <Route path="/tema6" component={Tema6} />
           <Route path="/tema7" component={Tema1} />
         </Switch>
       </div>

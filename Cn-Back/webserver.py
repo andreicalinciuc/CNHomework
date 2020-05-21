@@ -56,7 +56,7 @@ def hw2_solve():
     b_init = request.json.get("b_init")
 
     A_init = [[float(cell) for cell in row.split(",")] for row in A_init.split("\n")]
-    b_init = [float(cell) for cell in b_init.split("\n")]
+    b_init = [float(cell) for cell in b_init.split(",")]
 
     if len(A_init) == len(b_init):
         import Tema2
