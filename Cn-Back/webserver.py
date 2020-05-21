@@ -22,7 +22,7 @@ def hw1_p1():
 @app.route("/Tema1/p2", methods=["GET"])
 def hw1_p2():
     import Tema1
-    return jsonify({"result": Tema1.problema2()}), HTTPStatus.CREATED
+    return jsonify({"result": Tema1.problema2(real=False)}), HTTPStatus.CREATED
 
 
 @app.route("/Tema1/p3", methods=["POST"])
@@ -41,10 +41,22 @@ def get_result(string, value, eps):
     return "{}: {} [{}]".format(string, value, "OK" if value < eps else "Not OK")
 
 
+# Tema 2
+# ---------------
+# A_init:
+# 2.5, 2, 2
+# 5, 6, 5
+# 5, 6, 6.5
+# ---------------
+# b_init
+# 2, 2, 2
 @app.route("/Tema2", methods=["POST"])
 def hw2_solve():
     A_init = request.json.get("A_init")
     b_init = request.json.get("b_init")
+
+    A_init = [[float(cell) for cell in row.split(",")] for row in A_init.split("\n")]
+    b_init = [float(cell) for cell in b_init.split("\n")]
 
     if len(A_init) == len(b_init):
         import Tema2
@@ -63,6 +75,8 @@ def hw2_solve():
         }), HTTPStatus.CREATED
 
 
+# Tema 3
+# Sunt cele 4 fisiere din Tema3_input
 @app.route("/Tema3", methods=["POST"])
 def hw3_add():
     import Tema3
@@ -86,23 +100,52 @@ def hw3_add():
     }), HTTPStatus.CREATED
 
 
+# Tema 4
+# 2 inputs, sunt cele din folderul Tema4_input (a_i.txt, b_i.txt)
 @app.route("/Tema4/solve", methods=["POST"])
 def hw4_solve():
     import Tema4
-    if Tema4.check_diagonal():
-        Tema4.solve()
+    a, n = Tema4.load_matrix_from_string(request.json.get("a"))
+    b, _ = Tema4.load_vector_from_string(request.json.get("b"))
+    if Tema4.check_diagonal(a, n):
+        x = Tema4.solve(a, b, n)
+        return jsonify({
+            "result": get_result(
+                "||A * X - b||",
+                0 if Tema4.check_solution(a, b, x) else 1,
+                eps
+            )
+        }), HTTPStatus.CREATED
 
 
+#   {
+#        "test_index": 0,
+#        "x_0": -1,
+#        "x_n": 2
+#   }
 @app.route("/Tema6/solve/5squares", methods=["POST"])
 def hw6_solve_5squares():
     import Tema6
-    Tema6.five_squares()
+    test_index = request.json.get("test_index")
+    test_params = list(Tema6.tests.values())[test_index]
+    test_params[0] = request.json.get("x_0", test_params[0])
+    test_params[1] = request.json.get("x_n", test_params[1])
+    return jsonify(Tema6.five_squares(*test_params)), HTTPStatus.CREATED
 
 
+#   {
+#        "test_index": 0,
+#        "x_0": -1,
+#        "x_n": 2
+#   }
 @app.route("/Tema6/solve/interpolation", methods=["POST"])
 def hw6_solve_interpolation():
     import Tema6
-    Tema6.interpolation()
+    test_index = request.json.get("test_index")
+    test_params = list(Tema6.tests.values())[test_index]
+    test_params[0] = request.json.get("x_0", test_params[0])
+    test_params[1] = request.json.get("x_n", test_params[1])
+    return jsonify(Tema6.five_squares(*test_params)), HTTPStatus.CREATED
 
 
 if __name__ == '__main__':

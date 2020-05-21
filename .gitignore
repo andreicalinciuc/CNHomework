@@ -24,3 +24,7 @@ yarn-error.log*
 venv/
 
 Cn-Front/node_modules/
+
+Cn-Back/__pycache__/
+
+Cn-Back/.idea/
