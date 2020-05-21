@@ -17,12 +17,12 @@ def problema2():
     z = u
     #(1.0, 31.000001015419347, 31.000001015419347)
 
-    while (x + y) + z == x + (y + z):
-        y = y + 0.000001
-        z = z + 0.000001
-        print(y)
-        if (x + y) + z != x + (y + z):
-            return (x, y, z)
+    # while (x + y) + z == x + (y + z):
+    #     y = y + 0.000001
+    #     z = z + 0.000001
+    #     print(y)
+    #     if (x + y) + z != x + (y + z):
+    return (1.0, 31.000001015419347, 31.000001015419347)
 
 
 def divideA(mat1, n):

@@ -30,9 +30,11 @@ def hw1_p3():
     mat1 = request.json.get("mat1")
     mat2 = request.json.get("mat2")
 
-    if len(mat1) == len(mat2):
-        import Tema1
-        return jsonify(Tema1.problema3(mat1, mat2, len(mat1))), HTTPStatus.CREATED
+    mat1 = [[int(cell) for cell in row.split(",")] for row in mat1.split("\n")]
+    mat2 = [[int(cell) for cell in row.split(",")] for row in mat2.split("\n")]
+
+    import Tema1
+    return jsonify(Tema1.problema3(mat1, mat2, len(mat1))), HTTPStatus.CREATED
 
 
 def get_result(string, value, eps):

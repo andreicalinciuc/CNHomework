@@ -9,6 +9,8 @@ import "../../global/global.css";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import * as actionTypes from "../../store/actions/actions";
+import Tema2 from "../Tema/Tema2";
+import Tema3 from "../Tema/Tema3";
 
 class CMS extends Component {
   render() {
@@ -44,8 +46,8 @@ class CMS extends Component {
         </Sidebar>
         <Switch>
           <Route path="/tema1" component={Tema1} />
-          <Route path="/tema2" component={Tema1} />
-          <Route path="/tema3" component={Tema1} />
+          <Route path="/tema2" component={Tema2} />
+          <Route path="/tema3" component={Tema3} />
           <Route path="/tema4" component={Tema1} />
           <Route path="/tema6" component={Tema1} />
           <Route path="/tema7" component={Tema1} />
