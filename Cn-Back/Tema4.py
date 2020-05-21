@@ -7,11 +7,10 @@ PRECISION = 8
 EPS = pow(10, -PRECISION)
 
 
-def load_matrix_from_file(path, ignore_max_len_limit=False):
+def load_matrix_from_string(string, ignore_max_len_limit=False):
     matrix = {}
-    with open(path, "r") as f:
-        lines = f.read().splitlines()
-        matrix_size = int(lines[0])
+    lines = string.splitlines()
+    matrix_size = int(lines[0])
     for line in lines[1:]:
         if not line:
             continue
@@ -29,14 +28,25 @@ def load_matrix_from_file(path, ignore_max_len_limit=False):
     return matrix, matrix_size
 
 
-def load_vector_from_file(path):
+def load_matrix_from_file(path, ignore_max_len_limit=False):
     with open(path, "r") as f:
-        lines = f.read().splitlines()
-        vector_size = int(lines[0])
+        content = f.read()
+    return load_matrix_from_string(content, ignore_max_len_limit)
+
+
+def load_vector_from_string(content):
+    lines = content.splitlines()
+    vector_size = int(lines[0])
     vector = [float(line) for line in lines[1:] if line]
     if len(vector) != vector_size:
         raise Exception("Vector length declared not equal to actual length!")
     return vector, vector_size
+
+
+def load_vector_from_file(path):
+    with open(path, "r") as f:
+        content = f.read()
+    return load_vector_from_string(content)
 
 
 def check_diagonal(a, n):
@@ -75,6 +85,16 @@ def solve(a, b, n, w=1):
         return None
 
 
+def check_solution(a, b, x):
+    row_values = []
+    for row_index in a.keys():
+        row_sum = 0
+        for col_index in a[row_index].keys():
+            row_sum += a[row_index][col_index] * x[col_index]
+        row_values.append(row_sum)
+    return la.norm(np.array(row_values) - np.array(b)) < EPS
+
+
 def main():
     for a_nr in range(5):
         a, n = load_matrix_from_file("Tema4_input/a_{}.txt".format(a_nr+1), ignore_max_len_limit=True)
@@ -84,6 +104,7 @@ def main():
         if check_diagonal(a, n):
             print("#{} Diagonal: No null values".format(a_nr+1))
             x = solve(a, b, n)
+            print(check_solution(a, b, x))
             print("#{} Solution: {}".format(a_nr+1, x if x else "Cannot compute"))
         else:
             print("#{} Diagonal: Contains null values".format(a_nr+1))
