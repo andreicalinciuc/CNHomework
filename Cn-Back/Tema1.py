@@ -10,19 +10,22 @@ def problema1():
             return index
 
 
-def problema2():
+def problema2(real=True):
     x = 1.0
     u = problema1()
     y = u
     z = u
     #(1.0, 31.000001015419347, 31.000001015419347)
 
-    # while (x + y) + z == x + (y + z):
-    #     y = y + 0.000001
-    #     z = z + 0.000001
-    #     print(y)
-    #     if (x + y) + z != x + (y + z):
-    return (1.0, 31.000001015419347, 31.000001015419347)
+    if not real:
+        return (1.0, 31.000001015419347, 31.000001015419347)
+
+    while (x + y) + z == x + (y + z):
+        y = y + 0.000001
+        z = z + 0.000001
+        print(y)
+        if (x + y) + z != x + (y + z):
+            return (x, y, z)
 
 
 def divideA(mat1, n):
