@@ -148,6 +148,17 @@ def hw6_solve_interpolation():
     return jsonify(Tema6.five_squares(*test_params)), HTTPStatus.CREATED
 
 
+#   {
+#        "test_index": 0
+#   }
+@app.route("/Tema7/solve", methods=["POST"])
+def hw7_solve():
+    import Tema7
+    test_index = request.json.get("test_index")
+    test_params = list(Tema7.tests.values())[test_index]
+    return jsonify(Tema7.solve(*test_params)), HTTPStatus.CREATED
+
+
 if __name__ == '__main__':
     print("Starting web server...")
     app.run(host="0.0.0.0", port=5000)
