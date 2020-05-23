@@ -12,7 +12,8 @@ import * as actionTypes from "../../store/actions/actions";
 import Tema2 from "../Tema/Tema2";
 import Tema3 from "../Tema/Tema3";
 import Tema4 from "../Tema/Tema4";
-import Tema6 from "../Tema/Tema4 copy";
+import Tema6 from "../Tema/Tema6";
+import Tema7 from "../Tema/Tema7";
 
 class CMS extends Component {
   render() {
@@ -52,7 +53,7 @@ class CMS extends Component {
           <Route path="/tema3" component={Tema3} />
           <Route path="/tema4" component={Tema4} />
           <Route path="/tema6" component={Tema6} />
-          <Route path="/tema7" component={Tema1} />
+          <Route path="/tema7" component={Tema7} />
         </Switch>
       </div>
     );
