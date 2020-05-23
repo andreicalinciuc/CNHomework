@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import history from "./histoy";
-import { HashRouter, Route, Link } from "react-router-dom";
+import { HashRouter} from "react-router-dom";
 import logInReducer from "../src/store/reducers/loginReducer";
 
 import { Provider } from "react-redux";

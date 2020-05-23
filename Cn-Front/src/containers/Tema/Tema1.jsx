@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import users from "../../global/usersList";
 import "./Users.css";
 import { Input, Button } from "@material-ui/core";
 class Tema1 extends Component {

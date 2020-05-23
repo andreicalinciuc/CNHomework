@@ -5,13 +5,13 @@ import math
 
 tests = {
     "x ** 4 - 12 * x ** 3 + 30 * x ** 2 + 12":
-        (1, 5, lambda x: x ** 4 - 12 * x ** 3 + 30 * x ** 2 + 12),
+        [1, 5, lambda x: x ** 4 - 12 * x ** 3 + 30 * x ** 2 + 12],
     "math.sin(x) - math.cos(x)":
-        (0, 31 * np.pi / 16, lambda x: math.sin(x) - math.cos(x)),
+        [0, 31 * np.pi / 16, lambda x: math.sin(x) - math.cos(x)],
     "math.sin(2 * x) + math.sin(x) + math.cos(3 * x)":
-        (0, 31 * np.pi / 16, lambda x: math.sin(2 * x) + math.sin(x) + math.cos(3 * x)),
+        [0, 31 * np.pi / 16, lambda x: math.sin(2 * x) + math.sin(x) + math.cos(3 * x)],
     "math.sin(x) ** 2 - math.cos(x) ** 2":
-        (0, 63 * np.pi / 32, lambda x: math.sin(x) ** 2 - math.cos(x) ** 2)
+        [0, 63 * np.pi / 32, lambda x: math.sin(x) ** 2 - math.cos(x) ** 2]
 }
 
 
@@ -60,6 +60,11 @@ def five_squares(x_0, x_n, func):
     print("\tSm = {}".format(Sm))
     print("\tf(x) = {}".format(func(x_t)))
     print("\t|Sm(x) - f(x)| = {}".format(abs(Sm - func(x_t))))
+    return "x = {}\n" \
+           "Sm = {}\n" \
+           "f(x) = {}\n" \
+           "|Sm(x) - f(x)| = {}".format(
+               x_t, Sm, func(x_t), abs(Sm - func(x_t)))
 
 
 def interpolation(x_0, x_n, func):
@@ -95,6 +100,11 @@ def interpolation(x_0, x_n, func):
         print("\tTn = {}".format(Tn))
         print("\tf(x) = {}".format(func(x_t)))
         print("\t|Tn(x) - f(x)| = {}".format(abs(Tn - func(x_t))))
+        return "x = {}\n" \
+               "Tn = {}\n" \
+               "f(x) = {}\n" \
+               "|Tn(x) - f(x)| = {}".format(
+                   x_t, Tn, func(x_t), abs(Tn - func(x_t)))
 
 
 def main():

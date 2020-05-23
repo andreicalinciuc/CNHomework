@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import users from "../../global/usersList";
 import "./Users.css";
 import { Input, Button } from "@material-ui/core";
-class Tema2 extends Component {
+class Tema7 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      matr1: null,
+      matr1: -1,
       matr2: null,
       respMatr: null,
+      respMatr2: null,
       respP1: null,
       respP2: null,
       loading: true,
@@ -16,25 +17,17 @@ class Tema2 extends Component {
   }
 
   submit = async () => {
-    console.log(
-      JSON.stringify({
-        A_init: this.state.matr1,
-        b_init: this.state.matr2,
-      })
-    );
-
-    var response = await fetch("http://localhost:5000/Tema2", {
+    var response = await fetch("http://localhost:5000/Tema7/solve", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        A_init: this.state.matr1,
-        b_init: this.state.matr2,
+        test_index: parseInt(this.state.matr1),
       }),
     }).then((response) => response.json());
-    console.log(response);
+
     this.setState({ respMatr: response });
   };
 
@@ -42,7 +35,9 @@ class Tema2 extends Component {
     return (
       <div style={{ marginLeft: "15px", width: "100%" }}>
         <div>
-          <p>Rezolvarea ecuatiilor liniare folosind descompunera LU:</p>
+          <p>
+            Metoda Laguerre de aproximare a radacinilor reale ale unui polinom
+          </p>
           <div
             style={{
               display: "flex",
@@ -51,7 +46,7 @@ class Tema2 extends Component {
             }}
           >
             <div>
-              <p>Matr1:</p>
+              <p>test_index:</p>
               <Input
                 multiline={true}
                 rowsMax={10}
@@ -61,18 +56,11 @@ class Tema2 extends Component {
                   });
                 }}
               />
-            </div>
-            <div>
-              <p>Matr2:</p>
-              <Input
-                multiline={true}
-                rowsMax={10}
-                onChange={(e) => {
-                  this.setState({
-                    matr2: e.target.value,
-                  });
-                }}
-              />
+              <p style={{ color: "red" }}>
+                {this.state.matr1 < 0 || this.state.matr1 > 3
+                  ? "Input between 0 and 3"
+                  : null}
+              </p>
             </div>
           </div>
         </div>
@@ -87,10 +75,8 @@ class Tema2 extends Component {
           <Button onClick={() => this.submit()}>Submit</Button>
           {this.state.respMatr !== null ? (
             <div>
-              <p>{this.state.respMatr.result1}</p>
-              <p>{this.state.respMatr.result2}</p>
-              <p>{this.state.respMatr.result3}</p>
-              <p>{this.state.respMatr.result4}</p>
+              <p>Result:</p>
+              <p>{this.state.respMatr}</p>
             </div>
           ) : null}
         </div>
@@ -99,4 +85,4 @@ class Tema2 extends Component {
   }
 }
 
-export default Tema2;
+export default Tema7;

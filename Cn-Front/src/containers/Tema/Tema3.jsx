@@ -8,20 +8,17 @@ class Tema3 extends Component {
     this.state = {
       matr1: null,
       matr2: null,
+      matr3: null,
+      matr4: null,
       respMatr: null,
       respP1: null,
       respP2: null,
-      loading: true,
+      loading: false,
     };
   }
 
- 
   submit = async () => {
-    console.log(JSON.stringify({
-      "a": this.state.matr1,
-      "b": this.state.matr2,
-    }))
-
+    this.setState({ loading: true });
     var response = await fetch("http://localhost:5000/Tema3", {
       method: "POST",
       headers: {
@@ -29,23 +26,22 @@ class Tema3 extends Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        A_init: this.state.matr1,
-        b_init: this.state.matr2,
+        a: this.state.matr1,
+        b: this.state.matr2,
+        aplusb: this.state.matr3,
+        aorib: this.state.matr4,
       }),
-    });
+    }).then((response) => response.json()); 
     console.log(response);
-    this.setState({ respMatr: response });
+    this.setState({ respMatr: response, loading: false });
   };
 
   render() {
     return (
-      <div style={{ marginLeft: "15px" }}>
-       
+      <div style={{ marginLeft: "15px",width:"100%" }}>
         <div>
           <p>
-            P3: Înmulțirea matricelor booleene (Algoritmul celor patru ruşi) -
-            Aho, A. V., Hopcroft, J. E., Ullman, J. D. (1976), The Design and
-            Analysis of Computer Algorithms, Addison-Wesley.
+          Verificare adunare si inmultire a matricilor rare:
           </p>
 
           <div
@@ -79,6 +75,30 @@ class Tema3 extends Component {
                 }}
               />
             </div>
+            <div>
+              <p>Matr1 + Matr2:</p>
+              <Input
+                multiline={true}
+                rowsMax={10}
+                onChange={(e) => {
+                  this.setState({
+                    matr3: e.target.value,
+                  });
+                }}
+              />
+            </div>
+            <div>
+              <p>Matr1 * Matr2:</p>
+              <Input
+                multiline={true}
+                rowsMax={10}
+                onChange={(e) => {
+                  this.setState({
+                    matr4: e.target.value,
+                  });
+                }}
+              />
+            </div>
           </div>
         </div>
         <div
@@ -90,16 +110,16 @@ class Tema3 extends Component {
           }}
         >
           <Button onClick={() => this.submit()}>Submit</Button>
-          {/* <table
-            style={{ border: "1px solid black", width: "25%", margin: "auto" }}
-          >
-            Result:
-            {this.state.respMatr !== null
-              ? this.state.respMatr.map((item) => {
-                return <tr>{item}</tr>;
-              })
-              : null}
-          </table> */}
+          {this.state.loading === false ? (
+            this.state.respMatr !== null ? (
+              <div>
+                <p>{this.state.respMatr.a_plus_b}</p>
+                <p>{this.state.respMatr.a_ori_b}</p>
+              </div>
+            ) : null
+          ) : (
+            "waiting result"
+          )}
         </div>
       </div>
     );
